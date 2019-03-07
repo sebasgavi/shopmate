@@ -1,8 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Search, ShoppingBasket } from '@material-ui/icons';
+import { Search, ShoppingBasket, Close } from '@material-ui/icons';
 
 import './Navbar.css';
+import SearchInput from './SearchInput';
 
 const Navbar = function(props: {}) {
   return (
@@ -21,17 +22,12 @@ const Navbar = function(props: {}) {
       </ul>
 
       <div className="Navbar__search">
-        <input type="text"/>
-        <button>
-          <Search />
-        </button>
+        <SearchInput />
       </div>
 
-      <div className="Navbar__cart">
-        <Link to="/cart">
-          <ShoppingBasket />
-        </Link>
-      </div>
+      <Link className="Navbar__cart" to="/cart">
+        <ShoppingBasket />
+      </Link>
       
     </nav>
   );
