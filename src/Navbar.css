@@ -1,0 +1,26 @@
+.Navbar{
+    padding: 11px 15px;
+    background: white;
+    display: flex;
+}
+
+.Navbar__logo{
+    font-size: 15px;
+    line-height: 1.5;
+    letter-spacing: 2px;
+    text-align: center;
+    color: #f62f5e;
+    text-decoration: none;
+    
+}
+
+.Navbar__links{
+    display: flex;
+
+}
+.Navbar__links li{
+
+}
+.Navbar__links li{
+    
+}
