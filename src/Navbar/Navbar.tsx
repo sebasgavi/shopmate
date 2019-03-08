@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { Search, ShoppingBasket, Close } from '@material-ui/icons';
 
 import './Navbar.scss';
-import SearchInput from './SearchInput';
+import SearchInput from '../SearchInput/SearchInput';
 
 const Navbar = function(props: {}) {
 
