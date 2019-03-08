@@ -2,3 +2,16 @@
   width: 840px;
   margin: 0 auto;
 }
+
+.ProductsGrid{
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: 300px;
+  grid-column-gap: 30px;
+  grid-row-gap: 30px;
+
+  &__filters{
+    background: red;
+    grid-row: 1 / 3;
+  }
+}
