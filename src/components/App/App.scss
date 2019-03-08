@@ -9,15 +9,3 @@
     padding: $spacer;
   }
 }
-
-.ProductsGrid{
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-auto-rows: 300px;
-  grid-gap: 30px;
-
-  &__filters{
-    background: red;
-    grid-row: 1 / 3;
-  }
-}
