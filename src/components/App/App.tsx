@@ -33,19 +33,22 @@ class App extends Component {
 
           <Navbar />
 
-          <div className="ProductsGrid">
-            <div className="ProductsGrid__filters">
-              
-            </div>
+          <div className="App__container">
+            <div className="ProductsGrid">
+              <div className="ProductsGrid__filters">
 
-            {this.state.products.map(({ product_id, name, price, thumbnail }) => 
-              <ProductThumb
-                key={product_id}
-                id={product_id}
-                name={name}
-                price={price}
-                image={thumbnail} />)}
+              </div>
+
+              {this.state.products.map(({ product_id, name, price, thumbnail }) => 
+                <ProductThumb
+                  key={product_id}
+                  id={product_id}
+                  name={name}
+                  price={price}
+                  image={thumbnail} />)}
+            </div>
           </div>
+
           
         </div>
       </BrowserRouter>

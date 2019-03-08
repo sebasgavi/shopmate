@@ -1,5 +1,7 @@
+@import '../../common';
+
 .Navbar{
-  padding: 11px 25px;
+  padding: 11px $spacer;
   background: white;
   display: flex;
   align-items: center;

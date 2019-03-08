@@ -1,14 +1,20 @@
+@import '../../common';
+
 .App {
   width: 840px;
   margin: 0 auto;
+  
+  &__container{
+    background: $background;
+    padding: $spacer;
+  }
 }
 
 .ProductsGrid{
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: 300px;
-  grid-column-gap: 30px;
-  grid-row-gap: 30px;
+  grid-auto-rows: 300px;
+  grid-gap: 30px;
 
   &__filters{
     background: red;
