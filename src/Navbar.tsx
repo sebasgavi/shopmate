@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Search, ShoppingBasket, Close } from '@material-ui/icons';
 
-import './Navbar.css';
+import './Navbar.scss';
 import SearchInput from './SearchInput';
 
 const Navbar = function(props: {}) {

@@ -1,0 +1,57 @@
+.Navbar{
+  padding: 11px 25px;
+  background: white;
+  display: flex;
+  align-items: center;
+  background-color: #2e2e2e;
+  
+  &__logo{
+    font-size: 20px;
+    line-height: 2;
+    letter-spacing: 2px;
+    text-align: center;
+    color: #f62f5e;
+    text-decoration: none;
+    margin-right: 35px;
+  }
+  
+  &__links{
+    display: flex;
+    align-items: center;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    justify-content: space-between;
+    flex: 0 0 46%;
+    transition: flex-basis .5s ease;
+    
+    &--narrow{
+      flex-basis: 40%;
+    }
+    a{
+      text-decoration: none;
+      color: white;
+      font-size: 14px;
+    }
+  }
+  
+  &__search{
+    flex-grow: 1;
+    padding: 0 25px;
+  }
+  
+  &__cart{
+    transition: background-color .3s ease;
+    border-radius: 50%;
+    padding: 4px;
+    width: 32px;
+    height: 32px;
+    
+    &:hover{
+      background-color: rgba(255,255,255,.3);
+    }
+    svg{
+      fill: white;
+    }
+  } 
+}

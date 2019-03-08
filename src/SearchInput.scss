@@ -1,0 +1,73 @@
+.SearchInput{
+  height: 100%;
+  width: 100%;
+  position: relative;
+  color: white;
+  text-align: right;
+
+  $root: &;
+
+  &.active{
+    input{
+      background-color: rgba(255, 255, 255, 0.5);
+      width: 100%;
+      cursor: text;
+    }
+    #{$root}__addon--open{
+      left: 0px;
+    }
+  }
+
+  input{
+    width: 30px;
+    height: 30px;
+    border-radius: 15px;
+    border: none;
+    padding: 0 0 0 30px;
+    background-color: rgba(255, 255, 255, 0);
+    outline: none;
+    position: relative;
+    z-index: 1;
+    cursor: pointer;
+    transition: width .5s ease, background-color .3s ease;
+    
+    &:hover{
+      background-color: rgba(255, 255, 255, 0.5);
+    }
+    &::placeholder{
+      color: white;
+    }
+  }
+
+  &__addon{
+    background: none;
+    border: none;
+    height: 100%;
+    padding: 3px 5px 0px;
+    position: absolute;
+    top: 0;
+    
+    svg{
+      fill: white;
+    }
+
+    &--open{
+      left: calc(100% - 32px);
+      pointer-events: none;
+      z-index: 2;
+      transition: left .5s ease;
+      svg{
+        height: 90%;
+      }
+    }
+    
+    &--close{
+      opacity: 0;
+      right: 0;
+      z-index: 0;
+      svg{
+        height: 70%;
+      }
+    }
+  }
+}
