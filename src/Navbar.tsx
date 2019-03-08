@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Search, ShoppingBasket, Close } from '@material-ui/icons';
 
@@ -6,6 +6,9 @@ import './Navbar.css';
 import SearchInput from './SearchInput';
 
 const Navbar = function(props: {}) {
+
+  const [ isActive, setActive ] = useState(false);
+
   return (
     <nav className="Navbar">
       
@@ -13,7 +16,7 @@ const Navbar = function(props: {}) {
         SHOPMATE
       </a>
 
-      <ul className="Navbar__links">
+      <ul className={`Navbar__links ${isActive ? 'Navbar__links--narrow' : ''}`}>
         <li><Link to="/women">Women</Link></li>
         <li><Link to="/men">Men</Link></li>
         <li><Link to="/kids">Kids</Link></li>
@@ -22,7 +25,9 @@ const Navbar = function(props: {}) {
       </ul>
 
       <div className="Navbar__search">
-        <SearchInput />
+        <SearchInput 
+          onToggle={(val) => setActive(val)}
+          isActive={isActive} />
       </div>
 
       <Link className="Navbar__cart" to="/cart">

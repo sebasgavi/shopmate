@@ -4,15 +4,17 @@ import { Search, ShoppingBasket, Close } from '@material-ui/icons';
 
 import './SearchInput.css';
 
-const SearchInput = function(props: {}) {
+interface SearchInputProps { 
+  isActive: boolean;
+  onToggle: (isActive: boolean) => void;
+}
 
-  const [ active, setActive ] = useState(false);
-
+const SearchInput = function({ isActive, onToggle }: SearchInputProps) {
   return (
-    <div className={`SearchInput ${active ? 'active' : ''}`}>
+    <div className={`SearchInput ${isActive ? 'active' : ''}`}>
       <input 
-        onFocus={() => setActive(true)}
-        onBlur={() => setActive(false)}
+        onFocus={() => onToggle(true)}
+        onBlur={() => onToggle(false)}
         type="text" placeholder="search anything"/>
       <button className="SearchInput__addon SearchInput__addon--close">
         <Close />
