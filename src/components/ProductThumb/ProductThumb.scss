@@ -1,9 +1,66 @@
+@import '../../common.scss';
+
 .ProductThumb{
   background: white;
   box-shadow: 0px 1px 2px fade-out(black, .8);
   transition: box-shadow .3s ease;
+  text-align: center;
+  position: relative;
 
+  $p: $spacer*1.2 $spacer;
+
+  &__front{
+    padding: $p;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    height: 100%;
+  }
+
+  &__back{
+    padding: $p;
+    position: absolute;
+    background: fade-out(white, .1);
+    opacity: 0;
+    transition: opacity .3s ease;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  &__title{
+    font-size: 1.1em;
+    margin: 0;
+  }
+
+  &__price{
+    color: $primary;
+    margin: 0;
+    transition: opacity .3s ease;
+  }
+
+  &__image{
+    max-width: 100%;
+  }
+
+
+  $context: &;
   &:hover{
     box-shadow: 0px 6px 25px fade-out(black, .6);
+
+    #{$context}__front #{$context}__price{
+      opacity: 0;
+    }
+
+    #{$context}__back{
+      opacity: 1;
+    }
   }
+
 }

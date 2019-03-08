@@ -5,14 +5,14 @@
   background: white;
   display: flex;
   align-items: center;
-  background-color: #2e2e2e;
+  background-color: $gray-dark;
   
   &__logo{
     font-size: 20px;
     line-height: 2;
     letter-spacing: 2px;
     text-align: center;
-    color: #f62f5e;
+    color: $primary;
     text-decoration: none;
     margin-right: 35px;
   }
