@@ -26,8 +26,16 @@ const ProductsGrid = function({ match }: any) {
 
   return (
     <div className="ProductsGrid">
-      <div className="ProductsGrid__filters">
+      <div className="Filters">
+        <header className="Filters__header">
+          <h2>Filter {state.productsCount} items</h2>
+        </header>
+        <section className="Filters__content">
 
+        </section>
+        <footer className="Filters__footer">
+          
+        </footer>
       </div>
 
       {state.products.map(({ product_id, name, price, discounted_price, thumbnail }) => 
