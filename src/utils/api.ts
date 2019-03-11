@@ -1,4 +1,5 @@
 import request from 'superagent';
+import { getEnabledCategories } from 'trace_events';
 
 /**
  * helper to call API
@@ -25,11 +26,38 @@ const api = function(){
           });
           resolve(res.body);
         }, reject);
-    })
+    });
+  }
+
+  function getCategories(){
+    return new Promise((resolve, reject) => {
+      let cache = localStorage.getItem('categories');
+      let cacheTime = parseInt(localStorage.getItem('categories_time') || '');
+      // cache time for categories = 10 days
+      let cacheMaxTime = 10 * 24 * 60 * 60 * 1000;
+      let timeNow = Date.now();
+
+      if(!cache || 
+        (!isNaN(cacheTime) && timeNow - cacheTime > cacheMaxTime)
+        ){
+        request
+          .get(`${root}/categories`)
+          .set('Accept', 'application/json')
+          .query({ order: 'name,ASC' })
+          .then(res => {
+            localStorage.setItem('categories', JSON.stringify(res.body));
+            localStorage.setItem('categories_time', timeNow + '')
+            resolve(res.body);
+          }, reject);
+      } else {
+        resolve(JSON.parse(cache));
+      }
+    });
   }
 
   return {
     getProducts,
+    getCategories,
   }
 }
 
