@@ -43,14 +43,26 @@
     color: $primary;
     margin: 0;
     transition: opacity .3s ease;
+
+    span{
+      display: block;
+    }
   }
 
   &__image{
     max-width: 100%;
   }
 
-
   $context: &;
+
+  &--discounted{
+    #{$context}__price span:first-child{
+      color: $gray-dark;
+      text-decoration: line-through;
+      font-size: 90%;
+    }
+  }
+  
   &:hover{
     box-shadow: 0px 6px 25px fade-out(black, .6);
 

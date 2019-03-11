@@ -14,12 +14,15 @@ const ProductsGrid = function({ match }: any) {
     productsCount: 0,
   });
 
-  api.getProducts().then((result) => {
-    setState({
-      products: result.rows,
-      productsCount: result.count,
-    })
-  });
+  if(!state.productsCount){
+    api.getProducts().then((result) => {
+      console.log(result);
+      setState({
+        products: result.rows,
+        productsCount: result.count,
+      })
+    });
+  }
 
   return (
     <div className="ProductsGrid">
@@ -27,12 +30,13 @@ const ProductsGrid = function({ match }: any) {
 
       </div>
 
-      {state.products.map(({ product_id, name, price, thumbnail }) => 
+      {state.products.map(({ product_id, name, price, discounted_price, thumbnail }) => 
         <ProductThumb
           key={product_id}
           id={product_id}
           name={name}
           price={price}
+          discounted={discounted_price}
           image={thumbnail} />)}
     </div>
   );
