@@ -14,7 +14,7 @@ interface PaginationProps {
 
 const Pagination = ({ count, perPage, path, current, max, onClick }: PaginationProps) => {
   const items: any[] = [];
-  const total = Math.floor(count / perPage);
+  const total = Math.ceil(count / perPage);
   const side = Math.floor(max / 2);
   let left = current - side < 1 ? 1 : current - side;
   let right = left + max;
@@ -27,6 +27,14 @@ const Pagination = ({ count, perPage, path, current, max, onClick }: PaginationP
   for(let i = left; i < right; i++){
     items.push(i);
   }
+
+  // left side abbreviation dots and first page
+  if(left >= 3) items.unshift(left == 3 ? 2 : 'left');
+  if(left != 1) items.unshift(1);
+
+  // right side abbreviation dots and last page
+  if(right - 1 <= total - 2) items.push(right - 1 == total - 2 ? total - 1 : 'right');
+  if(right - 1 != total) items.push(total);
 
   return (<footer className="Pagination">
     {items.map((p) => {

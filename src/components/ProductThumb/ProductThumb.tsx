@@ -15,7 +15,7 @@ interface ProductThumbProps {
 const ProductThumb = function({ name, price, discounted, image, id }: ProductThumbProps) {
   
   // Fail safe to not show discount if the price is 0, must be an error.
-  if(discounted && parseFloat(discounted) > 0) discounted = '';
+  if(discounted && parseFloat(discounted) <= 0) discounted = '';
 
   return (
     <div className={`ProductThumb ${discounted ? 'ProductThumb--discounted' : ''}`}>

@@ -19,7 +19,7 @@
     box-shadow: $card-shadow;
     transition: all .3s ease;
 
-    &:hover{
+    &:hover:not(span){
       box-shadow: $card-shadow-hover;
     }
 
