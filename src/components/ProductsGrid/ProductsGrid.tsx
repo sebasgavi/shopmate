@@ -6,21 +6,44 @@ import './ProductsGrid.scss';
 import ProductThumb from '../ProductThumb/ProductThumb';
 import api from '../../utils/api';
 
+// is not a state because it should not change
+const maxPages = 5;
 
-const ProductsGrid = function({ match }: any) {
+let initialState: {
+  list: null|any[],
+  count: null|number,
+  pages: null|any[],
+} = {
+  list: null,
+  count: null,
+  pages: null,
+}
 
-  const [ state, setState ] = useState({
-    products: [],
-    productsCount: 0,
-  });
+const ProductsGrid = function({ match, location }: any) {
+  let searchParams = new URLSearchParams(location.search);
+  let tempPage = parseInt(searchParams.get('page') || '1');
 
-  if(!state.productsCount){
-    api.getProducts().then((result) => {
+  const [ fetching, setFetching ] = useState(true);
+  const [ page, setPage ] = useState(tempPage <= 0 ? 1 : tempPage);
+  const [ perPage, setPerPage ] = useState(7);
+  const [ products, setProducts ] = useState(initialState);
+
+  if(tempPage != page) {
+    setPage(tempPage);
+    setFetching(true);
+  }
+
+  if(fetching){
+    setFetching(false);
+    setProducts({ list: null, count: null, pages: null });
+    api.getProducts(page, perPage).then((result) => {
       console.log(result);
-      setState({
-        products: result.rows,
-        productsCount: result.count,
-      })
+      let pages: any = Array(Math.floor(result.count / perPage)).fill(0);
+      setProducts({
+        list: result.rows,
+        count: result.count,
+        pages,
+      });
     });
   }
 
@@ -28,7 +51,7 @@ const ProductsGrid = function({ match }: any) {
     <div className="ProductsGrid">
       <div className="Filters">
         <header className="Filters__header">
-          <h2>Filter {state.productsCount} items</h2>
+          {products.count && <h2>Filter {products.count} items</h2>}
         </header>
         <section className="Filters__content">
 
@@ -38,7 +61,11 @@ const ProductsGrid = function({ match }: any) {
         </footer>
       </div>
 
-      {state.products.map(({ product_id, name, price, discounted_price, thumbnail }) => 
+      {!products.list && Array(perPage).fill(0).map((_, i) => 
+        <div className="ProductsGrid__item-placeholder" key={i} />
+      )}
+
+      {products.list && products.list.map(({ product_id, name, price, discounted_price, thumbnail }) => 
         <ProductThumb
           key={product_id}
           id={product_id}
@@ -46,6 +73,14 @@ const ProductsGrid = function({ match }: any) {
           price={price}
           discounted={discounted_price}
           image={thumbnail} />)}
+
+      <footer className="ProductsGrid__pagination">
+        {products.pages && products.pages.map((_, i) => {
+          if(i <= 5){
+            return <Link key={i} to={`${match.path}?page=${i+1}`}>{i+1}</Link>
+          }
+        })}
+      </footer>
     </div>
   );
 }

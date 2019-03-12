@@ -33,8 +33,8 @@ const api = function(){
     return new Promise((resolve, reject) => {
       let cache = localStorage.getItem('categories');
       let cacheTime = parseInt(localStorage.getItem('categories_time') || '');
-      // cache time for categories = 10 days
-      let cacheMaxTime = 10 * 24 * 60 * 60 * 1000;
+      // cache time for categories = 1 day
+      let cacheMaxTime = 1 * 24 * 60 * 60 * 1000;
       let timeNow = Date.now();
 
       if(!cache || 
