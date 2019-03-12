@@ -1,0 +1,31 @@
+@import '../../common';
+
+.Pagination{
+  margin-top: $spacer;
+  display: flex;
+  justify-content: flex-end;
+
+  &__item{
+    width: 2.2em;
+    height: 2.2em;
+    margin-left: .5em;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: white;
+    text-decoration: none;
+    color: $gray-dark;
+    box-shadow: $card-shadow;
+    transition: all .3s ease;
+
+    &:hover{
+      box-shadow: $card-shadow-hover;
+    }
+
+    &.active{
+      background: $primary;
+      color: white;
+    }
+  }
+}

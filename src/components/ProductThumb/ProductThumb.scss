@@ -64,7 +64,7 @@
   }
   
   &:hover{
-    box-shadow: 0px 6px 25px fade-out(black, .6);
+    box-shadow: $card-shadow-hover;
 
     #{$context}__front #{$context}__price{
       opacity: 0;

@@ -5,18 +5,14 @@ import { Search, ShoppingBasket, Close } from '@material-ui/icons';
 import './ProductsGrid.scss';
 import ProductThumb from '../ProductThumb/ProductThumb';
 import api from '../../utils/api';
-
-// is not a state because it should not change
-const maxPages = 5;
+import Pagination from '../Pagination/Pagination';
 
 let initialState: {
   list: null|any[],
   count: null|number,
-  pages: null|any[],
 } = {
   list: null,
   count: null,
-  pages: null,
 }
 
 const ProductsGrid = function({ match, location }: any) {
@@ -35,23 +31,22 @@ const ProductsGrid = function({ match, location }: any) {
 
   if(fetching){
     setFetching(false);
-    setProducts({ list: null, count: null, pages: null });
+    setProducts({ list: null, count: null });
     api.getProducts(page, perPage).then((result) => {
-      console.log(result);
-      let pages: any = Array(Math.floor(result.count / perPage)).fill(0);
       setProducts({
         list: result.rows,
         count: result.count,
-        pages,
       });
     });
   }
 
-  return (
+  return (<>
     <div className="ProductsGrid">
       <div className="Filters">
         <header className="Filters__header">
-          {products.count && <h2>Filter {products.count} items</h2>}
+          {products.count 
+            ? <h2>Filter {products.count} items</h2>
+            : <h2>Loading...</h2>}
         </header>
         <section className="Filters__content">
 
@@ -73,16 +68,10 @@ const ProductsGrid = function({ match, location }: any) {
           price={price}
           discounted={discounted_price}
           image={thumbnail} />)}
-
-      <footer className="ProductsGrid__pagination">
-        {products.pages && products.pages.map((_, i) => {
-          if(i <= 5){
-            return <Link key={i} to={`${match.path}?page=${i+1}`}>{i+1}</Link>
-          }
-        })}
-      </footer>
     </div>
-  );
+    
+    <Pagination max={5} count={products.count} perPage={perPage} path={match.path} current={page} />
+  </>);
 }
 
 export default ProductsGrid;
