@@ -3,9 +3,16 @@ import { Link } from 'react-router-dom';
 
 import './Pagination.scss';
 
-const Pagination = ({ count, perPage, path, current, max }) => {
-  if(!count) return null;
+interface PaginationProps { 
+  count: number;
+  perPage: number;
+  path: string;
+  current: number;
+  max: number; 
+  onClick?: (page) => void;
+}
 
+const Pagination = ({ count, perPage, path, current, max, onClick }: PaginationProps) => {
   const items: any[] = [];
   const total = Math.floor(count / perPage);
   const side = Math.floor(max / 2);
@@ -23,9 +30,12 @@ const Pagination = ({ count, perPage, path, current, max }) => {
 
   return (<footer className="Pagination">
     {items.map((p) => {
+      let c = `Pagination__item ${current === p ? 'active' : ''}`;
       return typeof p === 'number' 
-        ? <Link key={p} className={`Pagination__item ${current === p ? 'active' : ''}`} to={`${path}?page=${p}`}>{p}</Link>
-        : <span key={p} className="Pagination__item">...</span>;
+        ? <Link key={p} className={c} 
+            to={`${path}?page=${p}`}
+            onClick={onClick}>{p}</Link>
+        : <span key={p} className={c}>...</span>;
     })}
   </footer>);
 }

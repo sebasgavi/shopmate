@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { Search, ShoppingBasket, Close } from '@material-ui/icons';
 
@@ -23,6 +23,12 @@ const ProductsGrid = function({ match, location }: any) {
   const [ page, setPage ] = useState(tempPage <= 0 ? 1 : tempPage);
   const [ perPage, setPerPage ] = useState(7);
   const [ products, setProducts ] = useState(initialState);
+  const filtersRef = useRef(null);
+
+  const onPaginationClick = () => {
+    let elem: any = filtersRef.current;
+    if(elem) elem.scrollIntoView();
+  }
 
   if(tempPage != page) {
     setPage(tempPage);
@@ -43,7 +49,7 @@ const ProductsGrid = function({ match, location }: any) {
   return (<>
     <div className="ProductsGrid">
       <div className="Filters">
-        <header className="Filters__header">
+        <header className="Filters__header" ref={filtersRef}>
           {products.count 
             ? <h2>Filter {products.count} items</h2>
             : <h2>Loading...</h2>}
@@ -70,7 +76,7 @@ const ProductsGrid = function({ match, location }: any) {
           image={thumbnail} />)}
     </div>
     
-    <Pagination max={5} count={products.count} perPage={perPage} path={match.path} current={page} />
+    {products.count && <Pagination max={5} count={products.count} perPage={perPage} path={match.path} current={page} onClick={onPaginationClick} />}
   </>);
 }
 
