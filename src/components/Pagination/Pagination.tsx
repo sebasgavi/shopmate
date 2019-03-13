@@ -18,11 +18,13 @@ const Pagination = ({ count, perPage, path, current, max }: PaginationProps) => 
   let left = current - side < 1 ? 1 : current - side;
   let right = left + total > max ? max : total;
 
+  // if right side is going beyond max, fix range
   if(total > max && left + max > total){
     right = total + 1;
     left = right - max;
   }
 
+  // populate items array
   for(let i = left; i < right; i++){
     items.push(i);
   }
