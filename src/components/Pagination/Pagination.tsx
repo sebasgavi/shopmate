@@ -14,11 +14,11 @@ interface PaginationProps {
 const Pagination = ({ count, perPage, path, current, max }: PaginationProps) => {
   const items: any[] = [];
   const total = Math.ceil(count / perPage);
-  const side = Math.floor(max / 2);
+  const side = Math.floor(total > max ? max : total / 2);
   let left = current - side < 1 ? 1 : current - side;
-  let right = left + max;
+  let right = left + total > max ? max : total;
 
-  if(left + max > total){
+  if(total > max && left + max > total){
     right = total + 1;
     left = right - max;
   }
