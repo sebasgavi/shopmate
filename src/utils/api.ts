@@ -29,7 +29,7 @@ const api = function(){
     });
   }
 
-  function getCategories(){
+  function getCategories(): Promise<{rows, count}>{
     return new Promise((resolve, reject) => {
       let cache = localStorage.getItem('categories');
       let cacheTime = parseInt(localStorage.getItem('categories_time') || '');

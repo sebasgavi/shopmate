@@ -7,7 +7,7 @@ import ProductThumb from '../ProductThumb/ProductThumb';
 import api from '../../utils/api';
 import Pagination from '../Pagination/Pagination';
 
-let initialState: {
+let initialProducts: {
   list: null|any[],
   count: null|number,
 } = {
@@ -22,7 +22,8 @@ const ProductsGrid = function({ match, location }: any) {
   const [ fetching, setFetching ] = useState(true);
   const [ page, setPage ] = useState(tempPage <= 0 ? 1 : tempPage);
   const [ perPage, setPerPage ] = useState(7);
-  const [ products, setProducts ] = useState(initialState);
+  const [ products, setProducts ] = useState(initialProducts);
+  const [ categories, setCategories ]: any = useState(null);
   const filtersRef = useRef(null);
 
   const onPaginationClick = () => {
@@ -44,6 +45,12 @@ const ProductsGrid = function({ match, location }: any) {
         count: result.count,
       });
     });
+
+    if(!categories){
+      api.getCategories().then((result) => {
+        setCategories(result.rows);
+      });
+    }
   }
 
   return (<>
@@ -55,7 +62,11 @@ const ProductsGrid = function({ match, location }: any) {
             : <h2>Loading...</h2>}
         </header>
         <section className="Filters__content">
-
+            {categories && categories.map(cat => (<button 
+              key={cat.category_id}
+              className="Button Button--rect">
+              {cat.name}
+            </button>))}
         </section>
         <footer className="Filters__footer">
           

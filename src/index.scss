@@ -41,4 +41,12 @@ html{
   &:hover{
     background-color: darken($primary, 20%);
   }
+
+  &--rect{
+    border-radius: .3em;
+  }
+
+  &--light{
+    background-color: $background;
+  }
 }
