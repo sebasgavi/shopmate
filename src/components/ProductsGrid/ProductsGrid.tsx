@@ -49,6 +49,7 @@ const ProductsGrid = function({ match, location }: any) {
     if(!categories){
       api.getCategories().then((result) => {
         setCategories(result.rows);
+        console.log(result.rows)
       });
     }
   }

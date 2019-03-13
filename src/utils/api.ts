@@ -29,36 +29,72 @@ const api = function(){
     });
   }
 
-  function getCategories(): Promise<{rows, count}>{
+  function getHelper(resource: string, query = {}, cacheMaxTime = 0, ): Promise<any>{
     return new Promise((resolve, reject) => {
-      let cache = localStorage.getItem('categories');
-      let cacheTime = parseInt(localStorage.getItem('categories_time') || '');
-      // cache time for categories = 1 day
-      let cacheMaxTime = 1 * 24 * 60 * 60 * 1000;
+      let cache = localStorage.getItem(resource);
+      let cacheTime = parseInt(localStorage.getItem(`${resource}_time`) || '');
+      
       let timeNow = Date.now();
 
-      if(!cache || 
-        (!isNaN(cacheTime) && timeNow - cacheTime > cacheMaxTime)
-        ){
-        request
-          .get(`${root}/categories`)
+      let getResource = () => {
+        return request
+          .get(`${root}/${resource}`)
           .set('Accept', 'application/json')
-          .query({ order: 'name,ASC' })
+          .query(query)
           .then(res => {
-            localStorage.setItem('categories', JSON.stringify(res.body));
-            localStorage.setItem('categories_time', timeNow + '')
+            // only necesary for cache
+            if(cacheMaxTime){
+              localStorage.setItem(resource, JSON.stringify(res.body));
+              localStorage.setItem(`${resource}_time`, timeNow + '')
+            }
             resolve(res.body);
           }, reject);
-      } else {
-        resolve(JSON.parse(cache));
       }
+
+      // if there's no cacheMaxTime it means cache should not be used, just request resource
+      if(!cacheMaxTime) {
+        getResource();
+        return;
+      } 
+      // else verify the cache existence and time difference
+      else {
+        if(!cache || (!isNaN(cacheTime) && timeNow - cacheTime > cacheMaxTime)){
+          getResource();
+        } else {
+          resolve(JSON.parse(cache));
+        }
+      }
+
     });
+  }
+
+  function getCategories(): Promise<{rows, count}>{
+    // cache time for categories = 1 day
+    return getHelper(
+      'categories',
+      { order: 'name,ASC' },
+      hoursToMillis(24)
+    );
+  }
+
+  function getDepartments(): Promise<any>{
+    // cache time for departments = 1 day
+    return getHelper(
+      'departments',
+      {},
+      hoursToMillis(24)
+    );
   }
 
   return {
     getProducts,
     getCategories,
+    getDepartments,
   }
+}
+
+function hoursToMillis(hours){
+  return hours * 60 * 60 * 1000;
 }
 
 export default api();
