@@ -1,0 +1,42 @@
+@import '../../common';
+
+.ProductDetails{
+
+    &__content{
+        display: flex;
+        justify-content: space-between;
+    }
+    &__image{
+        flex-basis: 30%;
+        background-size: contain;
+        background-position: center;
+        background-color: white;
+        background-repeat: no-repeat;
+        border: 1em solid white;
+        min-height: 200px;
+    }
+    &__description{
+        flex-basis: calc(70% - #{$spacer});
+    }
+
+    &__price-title{
+        margin: 2em 0 .5em;
+    }
+
+    &__price{
+        color: $primary;
+        margin: 0;
+        span{
+            display: block;
+        }
+    }
+
+    $context: &;
+    &--discounted{
+        #{$context}__price span:first-child{
+            color: $gray-dark;
+            text-decoration: line-through;
+            font-size: 90%;
+        }
+    }
+}

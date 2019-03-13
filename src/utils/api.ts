@@ -25,7 +25,7 @@ const api = function(){
         .then(res => {
           // map thumbnail paths to complete URL
           if(res.body.rows) res.body.rows = res.body.rows.map(elem => {
-            elem.thumbnail = imagesRoot + elem.thumbnail;
+            if(elem.thumbnail) elem.thumbnail = imagesRoot + elem.thumbnail;
             return elem;
           });
 
@@ -34,6 +34,21 @@ const api = function(){
           resolve(res.body);
         }, reject);
     });
+  }
+
+  function getProduct(id: number){
+    return new Promise((resolve, reject) => {
+      request
+        .get(`${root}/products/${id}`)
+        .set('Accept', 'application/json')
+        .then(res => {
+          ['image', 'image_2', 'thumbnail'].forEach(key => {
+            res.body[key] = imagesRoot + res.body[key];
+          })
+
+          resolve(res.body);
+          }, reject);
+    })
   }
 
   function getHelper(resource: string, query = {}, cacheMaxTime = 0, ): Promise<any>{
@@ -95,6 +110,7 @@ const api = function(){
 
   return {
     getProducts,
+    getProduct,
     getCategories,
     getDepartments,
   }

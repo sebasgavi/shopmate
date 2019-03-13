@@ -50,8 +50,6 @@ const ProductsGrid = function({ match, location }: any) {
     
     let dep = departments.find(({ name }) => name === selectedDepartment);
     let cat = categories.find(({ name }) => name === selectedCategory);
-
-    console.log(dep, cat)
     
     setProducts({ list: null, count: null });
     api.getProducts(page, productsPerPage, dep && dep.department_id, cat && cat.category_id).then((result) => {

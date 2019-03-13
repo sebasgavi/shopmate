@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Search, ShoppingBasket, Close } from '@material-ui/icons';
 
 import './ProductThumb.scss';
 
@@ -33,7 +32,7 @@ const ProductThumb = function({ name, price, discounted, image, id }: ProductThu
           <span>From £{price}</span>
           {discounted && <span>From £{discounted}</span>}
         </p>
-        <Link className="Button" to="/store/gadasd">Quick view</Link>
+        <Link className="Button" to={`/store/product/${id}`}>Quick view</Link>
       </div>
     </div>
   );
