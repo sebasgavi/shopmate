@@ -6,6 +6,7 @@ import './ProductsGrid.scss';
 import ProductThumb from '../ProductThumb/ProductThumb';
 import api from '../../utils/api';
 import Pagination from '../Pagination/Pagination';
+import Filters from '../Filters/Filters';
 
 let initialProducts: {
   list: null|any[],
@@ -24,10 +25,11 @@ const ProductsGrid = function({ match, location }: any) {
   const [ perPage, setPerPage ] = useState(7);
   const [ products, setProducts ] = useState(initialProducts);
   const [ categories, setCategories ]: any = useState(null);
-  const filtersRef = useRef(null);
+  const [ departments, setDepartments ]: any = useState(null);
+  const scrollTopRef = useRef(null);
 
   const onPaginationClick = () => {
-    let elem: any = filtersRef.current;
+    let elem: any = scrollTopRef.current;
     if(elem) elem.scrollIntoView();
   }
 
@@ -52,27 +54,21 @@ const ProductsGrid = function({ match, location }: any) {
         console.log(result.rows)
       });
     }
+
+    if(!departments){
+      api.getDepartments().then((results) => {
+        setDepartments(results);
+        console.log(results);
+      });
+    }
   }
 
   return (<>
-    <div className="ProductsGrid">
-      <div className="Filters">
-        <header className="Filters__header" ref={filtersRef}>
-          {products.count 
-            ? <h2>Filter {products.count} items</h2>
-            : <h2>Loading...</h2>}
-        </header>
-        <section className="Filters__content">
-            {categories && categories.map(cat => (<button 
-              key={cat.category_id}
-              className="Button Button--rect">
-              {cat.name}
-            </button>))}
-        </section>
-        <footer className="Filters__footer">
-          
-        </footer>
-      </div>
+    <div className="ProductsGrid" ref={scrollTopRef}>
+      <Filters
+        products={products}
+        departments={departments}
+        categories={categories} />
 
       {!products.list && Array(perPage).fill(0).map((_, i) => 
         <div className="ProductsGrid__item-placeholder" key={i} />
