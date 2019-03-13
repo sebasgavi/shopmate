@@ -3,7 +3,7 @@ import React from 'react';
 import './Filters.scss';
 import { Link } from 'react-router-dom';
 
-const Filters = ({ products, departments, categories}) => {
+const Filters = ({ products, departments, categories, selectedDepartment }) => {
   return (<div className="Filters">
     <header className="Filters__header">
       {products.count 
@@ -17,10 +17,10 @@ const Filters = ({ products, departments, categories}) => {
         {departments && departments.map(dep => (<Link 
           key={dep.department_id}
           to={`/store/${dep.name}`}
-          className="Button Button--rect">
+          className={`Button Button--rect ${selectedDepartment !== dep.name ? 'Button--light' : ''}`}>
           {dep.name}
         </Link>))}
-        <Link to="/store" className="Button Button--rect">All</Link>
+        <Link to="/store" className={`Button Button--rect ${selectedDepartment ? 'Button--light' : ''}`}>All</Link>
       </div>
 
       <h3>Categories</h3>

@@ -8,40 +8,39 @@ import api from '../../utils/api';
 import Pagination from '../Pagination/Pagination';
 import Filters from '../Filters/Filters';
 
-let initialProducts: {
+const initialProducts: {
   list: null|any[],
   count: null|number,
 } = {
   list: null,
   count: null,
 }
+const productsPerPage = 7;
 
-const ProductsGrid = function({ match, location }: any) {
+const ProductsGrid = function({ match, location, history }: any) {
+
   let searchParams = new URLSearchParams(location.search);
-  let tempPage = parseInt(searchParams.get('page') || '1');
-
+  let page = parseInt(searchParams.get('page') || '1');
+  const selectedDepartment = match.params.department;
+  console.log(history);
+  
   const [ fetching, setFetching ] = useState(true);
-  const [ page, setPage ] = useState(tempPage <= 0 ? 1 : tempPage);
-  const [ perPage, setPerPage ] = useState(7);
   const [ products, setProducts ] = useState(initialProducts);
   const [ categories, setCategories ]: any = useState(null);
   const [ departments, setDepartments ]: any = useState(null);
   const scrollTopRef = useRef(null);
 
-  const onPaginationClick = () => {
+  // scroll top and re-fetch products when the match parameters change
+  const onNavigationClick = () => {
     let elem: any = scrollTopRef.current;
     if(elem) elem.scrollIntoView();
-  }
-
-  if(tempPage != page) {
-    setPage(tempPage);
     setFetching(true);
   }
 
   if(fetching){
     setFetching(false);
     setProducts({ list: null, count: null });
-    api.getProducts(page, perPage).then((result) => {
+    api.getProducts(page, productsPerPage).then((result) => {
       setProducts({
         list: result.rows,
         count: result.count,
@@ -68,9 +67,10 @@ const ProductsGrid = function({ match, location }: any) {
       <Filters
         products={products}
         departments={departments}
-        categories={categories} />
+        categories={categories}
+        selectedDepartment={selectedDepartment} />
 
-      {!products.list && Array(perPage).fill(0).map((_, i) => 
+      {!products.list && Array(productsPerPage).fill(0).map((_, i) => 
         <div className="ProductsGrid__item-placeholder" key={i} />
       )}
 
@@ -84,7 +84,12 @@ const ProductsGrid = function({ match, location }: any) {
           image={thumbnail} />)}
     </div>
     
-    {products.count && <Pagination max={5} count={products.count} perPage={perPage} path={match.path} current={page} onClick={onPaginationClick} />}
+    {products.count && <Pagination max={5} 
+      count={products.count} 
+      perPage={productsPerPage} 
+      path={location.pathname} 
+      current={page} 
+      onClick={onNavigationClick} />}
   </>);
 }
 
