@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Search, ShoppingBasket, Close } from '@material-ui/icons';
 
@@ -17,28 +17,25 @@ const initialProducts: {
 }
 const productsPerPage = 7;
 
-const ProductsGrid = function({ match, location, history }: any) {
+const ProductsGrid = function({ match, location }: any) {
 
   let searchParams = new URLSearchParams(location.search);
   let page = parseInt(searchParams.get('page') || '1');
   const selectedDepartment = match.params.department;
-  console.log(history);
   
-  const [ fetching, setFetching ] = useState(true);
   const [ products, setProducts ] = useState(initialProducts);
   const [ categories, setCategories ]: any = useState(null);
   const [ departments, setDepartments ]: any = useState(null);
   const scrollTopRef = useRef(null);
 
-  // scroll top and re-fetch products when the match parameters change
-  const onNavigationClick = () => {
-    let elem: any = scrollTopRef.current;
-    if(elem) elem.scrollIntoView();
-    setFetching(true);
-  }
+  // re-fetch products when match params change
+  useEffect(() => {
+    console.log('effect', page, selectedDepartment);
 
-  if(fetching){
-    setFetching(false);
+    // scroll top when the parameters change
+    let elem: any = scrollTopRef.current;
+    if(products.count && elem) elem.scrollIntoView();
+    
     setProducts({ list: null, count: null });
     api.getProducts(page, productsPerPage).then((result) => {
       setProducts({
@@ -47,20 +44,18 @@ const ProductsGrid = function({ match, location, history }: any) {
       });
     });
 
-    if(!categories){
-      api.getCategories().then((result) => {
-        setCategories(result.rows);
-        console.log(result.rows)
-      });
-    }
+  }, [page, selectedDepartment]);
 
-    if(!departments){
-      api.getDepartments().then((results) => {
-        setDepartments(results);
-        console.log(results);
-      });
-    }
-  }
+  // get categories and departments only once
+  useEffect(() => {
+    api.getCategories().then((result) => {
+      setCategories(result.rows);
+    });
+    api.getDepartments().then((results) => {
+      setDepartments(results);
+    });
+  }, []);
+  
 
   return (<>
     <div className="ProductsGrid" ref={scrollTopRef}>
@@ -88,8 +83,7 @@ const ProductsGrid = function({ match, location, history }: any) {
       count={products.count} 
       perPage={productsPerPage} 
       path={location.pathname} 
-      current={page} 
-      onClick={onNavigationClick} />}
+      current={page} />}
   </>);
 }
 

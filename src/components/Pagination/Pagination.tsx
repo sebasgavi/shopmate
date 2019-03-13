@@ -8,11 +8,10 @@ interface PaginationProps {
   perPage: number;
   path: string;
   current: number;
-  max: number; 
-  onClick?: (page) => void;
+  max: number;
 }
 
-const Pagination = ({ count, perPage, path, current, max, onClick }: PaginationProps) => {
+const Pagination = ({ count, perPage, path, current, max }: PaginationProps) => {
   const items: any[] = [];
   const total = Math.ceil(count / perPage);
   const side = Math.floor(max / 2);
@@ -41,8 +40,7 @@ const Pagination = ({ count, perPage, path, current, max, onClick }: PaginationP
       let c = `Pagination__item ${current === p ? 'active' : ''}`;
       return typeof p === 'number' 
         ? <Link key={p} className={c} 
-            to={`${path}?page=${p}`}
-            onClick={onClick}>{p}</Link>
+            to={`${path}?page=${p}`}>{p}</Link>
         : <span key={p} className={c}>...</span>;
     })}
   </footer>);
