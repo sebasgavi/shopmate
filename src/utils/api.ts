@@ -12,9 +12,10 @@ const api = function(){
   const root = 'https://backendapi.turing.com';
   const imagesRoot = 'https://backendapi.turing.com/images/products/';
 
-  function getProducts(page = 1, limit = 20, departmentId?): Promise<{ rows, count }>{
+  function getProducts(page = 1, limit = 20, departmentId?, categoryId?): Promise<{ rows, count }>{
     let url = `${root}/products`;
-    if(departmentId) url += `/inDepartment/${departmentId}`;
+    if(departmentId) url = `${root}/products/inDepartment/${departmentId}`;
+    if(categoryId) url = `${root}/products/inCategory/${categoryId}`;
 
     return new Promise((resolve, reject) => {
       request

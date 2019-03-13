@@ -41,24 +41,27 @@ const ProductsGrid = function({ match, location }: any) {
 
   // re-fetch products when match params change
   useEffect(() => {
-    // wait for departments to fetch products
-    if(!departments) return;
+    // wait for departments and categories to fetch products
+    if(!departments || !categories) return;
     
     // scroll top when the parameters change
     let elem: any = scrollTopRef.current;
     if(products.count && elem) elem.scrollIntoView();
     
     let dep = departments.find(({ name }) => name === selectedDepartment);
+    let cat = categories.find(({ name }) => name === selectedCategory);
+
+    console.log(dep, cat)
     
     setProducts({ list: null, count: null });
-    api.getProducts(page, productsPerPage, dep && dep.department_id).then((result) => {
+    api.getProducts(page, productsPerPage, dep && dep.department_id, cat && cat.category_id).then((result) => {
       setProducts({
         list: result.rows,
         count: result.count,
       });
     });
 
-  }, [departments, page, selectedDepartment]);  
+  }, [departments, categories, page, selectedDepartment, selectedCategory]);  
 
   return (<>
     <div className="ProductsGrid" ref={scrollTopRef}>
