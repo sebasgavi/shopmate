@@ -22,7 +22,7 @@ class App extends Component {
             
             <Switch>
 
-              <Route path="/store/:department?" component={ProductsGrid} />
+              <Route path="/store/:department?/:category?" component={ProductsGrid} />
               
             </Switch>
 

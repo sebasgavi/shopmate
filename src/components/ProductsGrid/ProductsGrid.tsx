@@ -22,6 +22,7 @@ const ProductsGrid = function({ match, location }: any) {
   let searchParams = new URLSearchParams(location.search);
   let page = parseInt(searchParams.get('page') || '1');
   const selectedDepartment = match.params.department;
+  const selectedCategory = match.params.category;
   
   const [ products, setProducts ] = useState(initialProducts);
   const [ categories, setCategories ]: any = useState(null);
@@ -57,10 +58,7 @@ const ProductsGrid = function({ match, location }: any) {
       });
     });
 
-  }, [departments, page, selectedDepartment]);
-
-  
-  
+  }, [departments, page, selectedDepartment]);  
 
   return (<>
     <div className="ProductsGrid" ref={scrollTopRef}>
@@ -68,7 +66,8 @@ const ProductsGrid = function({ match, location }: any) {
         products={products}
         departments={departments}
         categories={categories}
-        selectedDepartment={selectedDepartment} />
+        selectedDepartment={selectedDepartment}
+        selectedCategory={selectedCategory} />
 
       {!products.list && Array(productsPerPage).fill(0).map((_, i) => 
         <div className="ProductsGrid__item-placeholder" key={i} />
