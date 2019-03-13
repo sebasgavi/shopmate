@@ -12,10 +12,13 @@ const api = function(){
   const root = 'https://backendapi.turing.com';
   const imagesRoot = 'https://backendapi.turing.com/images/products/';
 
-  function getProducts(page = 1, limit = 20): Promise<{ rows, count }>{
+  function getProducts(page = 1, limit = 20, departmentId?): Promise<{ rows, count }>{
+    let url = `${root}/products`;
+    if(departmentId) url += `/inDepartment/${departmentId}`;
+
     return new Promise((resolve, reject) => {
       request
-        .get(`${root}/products`)
+        .get(url)
         .set('Accept', 'application/json')
         .query({ page, limit })
         .then(res => {
@@ -24,6 +27,9 @@ const api = function(){
             elem.thumbnail = imagesRoot + elem.thumbnail;
             return elem;
           });
+
+          // fix error in /inDepartment response
+          if(res.body.count && res.body.count.count) res.body.count = res.body.count.count;
           resolve(res.body);
         }, reject);
     });

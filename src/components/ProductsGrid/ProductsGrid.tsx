@@ -28,33 +28,38 @@ const ProductsGrid = function({ match, location }: any) {
   const [ departments, setDepartments ]: any = useState(null);
   const scrollTopRef = useRef(null);
 
+  // get categories and departments only once
+  useEffect(() => {
+    api.getDepartments().then((results) => {
+      setDepartments(results);
+    });
+    api.getCategories().then((result) => {
+      setCategories(result.rows);
+    });
+  }, []);
+
   // re-fetch products when match params change
   useEffect(() => {
-    console.log('effect', page, selectedDepartment);
-
+    // wait for departments to fetch products
+    if(!departments) return;
+    
     // scroll top when the parameters change
     let elem: any = scrollTopRef.current;
     if(products.count && elem) elem.scrollIntoView();
     
+    let dep = departments.find(({ name }) => name === selectedDepartment);
+    
     setProducts({ list: null, count: null });
-    api.getProducts(page, productsPerPage).then((result) => {
+    api.getProducts(page, productsPerPage, dep && dep.department_id).then((result) => {
       setProducts({
         list: result.rows,
         count: result.count,
       });
     });
 
-  }, [page, selectedDepartment]);
+  }, [departments, page, selectedDepartment]);
 
-  // get categories and departments only once
-  useEffect(() => {
-    api.getCategories().then((result) => {
-      setCategories(result.rows);
-    });
-    api.getDepartments().then((results) => {
-      setDepartments(results);
-    });
-  }, []);
+  
   
 
   return (<>
